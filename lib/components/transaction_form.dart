@@ -52,12 +52,15 @@ class _TransactionFormState extends State<TransactionForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                TextButton(
-                  onPressed: _submitForm,
-                  child: const Text(
-                    'Nova Transação',
-                    style: TextStyle(
-                      color: Colors.purple,
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: TextButton(
+                    onPressed: _submitForm,
+                    child: const Text(
+                      'Nova Transação',
+                      style: TextStyle(
+                        color: Colors.purple,
+                      ),
                     ),
                   ),
                 )

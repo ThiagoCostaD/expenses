@@ -17,10 +17,19 @@ class ExpensesApp extends StatelessWidget {
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
-          secondary: Colors.amber,
+          secondary: const Color.fromARGB(255, 15, 105, 3),
+          tertiary: const Color.fromARGB(255, 120, 75, 255),
+        ),
+        textTheme: tema.textTheme.copyWith(
+          titleLarge: const TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Color.fromARGB(255, 120, 75, 255),
         ),
       ),
     );
@@ -79,6 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
         backgroundColor: Colors.purple[700],
         title: const Text('Despesas Pessoais'),
         actions: [
@@ -95,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               width: double.infinity,
               child: Card(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 135, 175, 208),
                 elevation: 5,
                 child: Text('Gráfico'),
               ),
