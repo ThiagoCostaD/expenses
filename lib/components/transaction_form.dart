@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-//meu
 class TransactionForm extends StatefulWidget {
   final void Function(String, double) onSubmit;
 
-  const TransactionForm(this.onSubmit, {super.key});
+  const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -12,6 +11,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
+
   final valueController = TextEditingController();
 
   _submitForm() {
@@ -52,17 +52,14 @@ class _TransactionFormState extends State<TransactionForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: TextButton(
-                    onPressed: _submitForm,
-                    child: const Text(
-                      'Nova Transação',
-                      style: TextStyle(
-                        color: Colors.purple,
-                      ),
+                TextButton(
+                  child: const Text(
+                    'Nova Transação',
+                    style: TextStyle(
+                      color: Colors.purple,
                     ),
                   ),
+                  onPressed: _submitForm,
                 )
               ],
             ),
