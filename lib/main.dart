@@ -49,27 +49,65 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Novo Tênis de Corrida',
-    //   value: 310.76,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta de Luz',
-    //   value: 211.30,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Internet',
+      value: 99.30,
+      date: DateTime.now().subtract(const Duration(days: 6)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Novo',
+      value: 250.76,
+      date: DateTime.now().subtract(const Duration(days: 5)),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Contas',
+      value: 211.30,
+      date: DateTime.now().subtract(const Duration(days: 4)),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Novo',
+      value: 150.76,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Contas',
+      value: 21.30,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Novo',
+      value: 70.76,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Contas',
+      value: 200.30,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
   ];
 
-  List<Transaction> get _recentTransactions{
-    return _transactions.where((tr){
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
       return tr.date.isAfter(DateTime.now().subtract(
         const Duration(days: 7),
-        ));
-  }).toList();
-}
+      ));
+    }).toList();
+  }
+
+  get colorScheme => null;
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
