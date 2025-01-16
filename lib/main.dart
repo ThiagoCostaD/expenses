@@ -5,7 +5,7 @@ import 'dart:math';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
 
-main() => runApp(ExpensesApp());
+void main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
   ExpensesApp({Key? key}) : super(key: key);
@@ -29,6 +29,7 @@ class ExpensesApp extends StatelessWidget {
           ),
         ),
         appBarTheme: const AppBarTheme(
+          color: Colors.purple,
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 20,
@@ -48,56 +49,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Internet',
-      value: 99.30,
-      date: DateTime.now().subtract(const Duration(days: 6)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Novo',
-      value: 250.76,
-      date: DateTime.now().subtract(const Duration(days: 5)),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Contas',
-      value: 211.30,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't5',
-      title: 'Novo',
-      value: 150.76,
-      date: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't6',
-      title: 'Contas',
-      value: 21.30,
-      date: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Novo',
-      value: 70.76,
-      date: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Contas',
-      value: 200.30,
-      date: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -107,14 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  get colorScheme => null;
-
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -122,6 +72,41 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     Navigator.of(context).pop();
+  }
+
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
+  }
+
+  _editTransaction(String id) {
+    final transaction = _transactions.firstWhere((tr) => tr.id == id);
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(
+          (title, value, date) {
+            setState(() {
+              final index = _transactions.indexWhere((tr) => tr.id == id);
+              if (index >= 0) {
+                _transactions[index] = Transaction(
+                  id: id,
+                  title: title,
+                  value: value,
+                  date: date,
+                );
+              }
+            });
+            Navigator.of(context).pop(); // Fecha o modal após salvar
+          },
+          initialTitle: transaction.title,
+          initialValue: transaction.value,
+          initialDate: transaction.date,
+        );
+      },
+    );
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -149,8 +134,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.purple, Colors.amber],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Chart(_recentTransactions),
+            ),
+            TransactionList(
+              _transactions,
+              _removeTransaction,
+              _editTransaction,
+            ),
           ],
         ),
       ),

@@ -2,34 +2,54 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
-  final void Function(String, double) onSubmit;
+  final void Function(String, double, DateTime) onSubmit;
+  final String? initialTitle;
+  final double? initialValue;
+  final DateTime? initialDate;
 
-  const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
+  const TransactionForm(
+    this.onSubmit, {
+    this.initialTitle,
+    this.initialValue,
+    this.initialDate,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final _titleController = TextEditingController();
-  final _valueController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _valueController;
   DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.initialTitle);
+    _valueController = TextEditingController(
+        text: widget.initialValue != null
+            ? widget.initialValue!.toStringAsFixed(2)
+            : '');
+    _selectedDate = widget.initialDate ?? DateTime.now();
+  }
 
   _submitForm() {
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text) ?? 0;
 
-    if (title.isEmpty || value <= 0) {
+    if (title.isEmpty || value <= 0 || _selectedDate == null) {
       return;
     }
 
-    widget.onSubmit(title, value);
+    widget.onSubmit(title, value, _selectedDate!);
   }
 
   _showDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDate ?? DateTime.now(),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
@@ -94,7 +114,7 @@ class _TransactionFormState extends State<TransactionForm> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 ElevatedButton(
-                  child: const Text('Nova Transação'),
+                  child: const Text('Salvar Transação'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Theme.of(context).primaryColor,
